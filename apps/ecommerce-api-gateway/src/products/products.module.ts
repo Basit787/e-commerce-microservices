@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { ProductsResolver } from './products.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UsersService } from '../users/users.service';
+import { ProductsResolver } from './products.resolver';
+import { ProductsService } from './products.service';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { UsersService } from '../users/users.service';
         },
       },
     ]),
-    UsersService,
   ],
   providers: [ProductsResolver, ProductsService],
 })

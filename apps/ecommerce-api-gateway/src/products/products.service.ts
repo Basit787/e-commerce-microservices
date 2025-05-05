@@ -1,15 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
-import { ClientProxy } from '@nestjs/microservices';
-import { UsersService } from '../users/users.service';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @Inject('Product_Service') private readonly productService: ClientProxy,
-    private readonly userService: UsersService,
   ) {}
 
   create(createProductInput: CreateProductInput) {
