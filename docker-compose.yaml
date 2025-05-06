@@ -12,33 +12,17 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  users-db:
+  e-commerce-db:
     image: postgres:15
-    container_name: users-service-db
-    restart: always
     environment:
-      POSTGRES_USER: users
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpass
+      POSTGRES_DB: postgres
     ports:
-      - '5432:5432'
+      - 5432:5432
     volumes:
-      - users_postgres_data:/var/lib/postgresql/data
-
-  products-db:
-    image: postgres:15
-    container_name: products-service-db
-    restart: always
-    environment:
-      POSTGRES_USER: product
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: product
-    ports:
-      - '5431:5432'
-    volumes:
-      - products_postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   rabbitmq_data:
-  users_postgres_data:
-  products_postgres_data:
+  postgres_data:

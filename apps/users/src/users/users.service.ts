@@ -1,38 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  private users: CreateUserDto[] = [
-    {
-      id: 1,
-      name: 'user',
-      email: 'user@gmail.com',
-    },
-  ];
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
-    this.users.push({ ...createUserDto });
-    return {
-      message: 'User added successfully',
-      data: this.users,
-    };
+  async findAll() {
+    return await this.usersRepository.find();
   }
 
-  findAll() {
-    return this.users;
+  async findOne(id: string) {
+    return await this.usersRepository.findOneBy({ id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.usersRepository.delete(id);
+  }
+
+  async registerUser(createUserDto: CreateUserDto) {
+    return 'fjghgjkh';
+  }
+
+  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
+    const user = await this.usersRepository.findOneBy({ email });
+    if (user?.password !== pass) {
+      throw new UnauthorizedException();
+    }
+    const payload = { sub: user.id, username: user.name, email: user.email };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

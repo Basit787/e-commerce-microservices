@@ -1,12 +1,12 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateUserInput {
-  @Field(() => Int, {
+  @Field(() => ID, {
     description: 'Example field (placeholder)',
     nullable: true,
   })
-  id?: number;
+  id?: string;
 
   @Field({ nullable: true })
   name?: string;

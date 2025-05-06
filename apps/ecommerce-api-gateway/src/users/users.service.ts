@@ -16,17 +16,17 @@ export class UsersService {
     return firstValueFrom(this.userServive.send('findAllUsers', {}));
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return firstValueFrom(this.userServive.send('findOneUser', id));
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
+  update(updateUserInput: UpdateUserInput) {
     return firstValueFrom(
-      this.userServive.send('updateUser', { id, ...updateUserInput }),
+      this.userServive.send('updateUser', { ...updateUserInput }),
     );
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return firstValueFrom(this.userServive.send('removeUser', id));
   }
 }
